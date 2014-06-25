@@ -1,2 +1,1 @@
-zengjin_checkin
-===============
+Cloud code project for 百姓网签到. https://cn.avoscloud.com/docs/cloud_code_guide.html
