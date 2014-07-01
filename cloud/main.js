@@ -6,13 +6,13 @@ AV.Cloud.define("hello", function(request, response) {
 });
 
 AV.Cloud.define("checkIn", function(request, response) {
-    // request.params.lat
-    // request.params.lng
+    // request.params.location
     // request.params.ssid
     // request.params.mac
     // request.params.email
     // request.user: 见https://cn.avoscloud.com/docs/cloud_code_guide.html#%E8%B0%83%E7%94%A8%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0
     if (null != request.user) {
+        response.error(request.params.location);
         var currentTime = new Date();
         var hours = currentTime.getHours();
         if (hours >= 11 && hours <= 12) {
@@ -41,13 +41,12 @@ AV.Cloud.define("checkIn", function(request, response) {
             if (checked) {
                 response.error("不用狂刷存在感的");
             } else {
-                var location = new AV.GeoPoint({latitude: parseFloat(request.params.lat), longitude: parseFloat(request.params.lng)});
-                if (0.5 > location.kilometersTo(new AV.GeoPoint({latitude: 31.204754, longitude: 121.441255}))) {
+                if (0.5 > request.params.location.kilometersTo(new AV.GeoPoint({latitude: 31.204754, longitude: 121.441255}))) {
                     var CheckIn = AV.Object.extend("CheckIn");
                     var checkIn = new CheckIn();
                     checkIn.save({
                         employee: request.user,
-                        location: location,
+                        location: request.params.location,
                         ssid: request.params.ssid,
                         mac: request.params.mac,
                         email: request.params.email
