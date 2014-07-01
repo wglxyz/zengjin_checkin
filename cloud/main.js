@@ -27,11 +27,13 @@ AV.Cloud.define("checkIn", function(request, response) {
         query.equalTo("email", request.params.email);
         query.descending("createdAt");
         query.first().then(function(checkIn) {
-            var lastCheckInTime = checkIn.createdAt;
-            if (lastCheckInTime.toDateString() == currentTime.toDateString()) {
-                var lastHours = lastCheckInTime.getHours();
-                if (lastHours + 2 >= hours) {
-                    return true;
+            if (null != checkIn) {
+                var lastCheckInTime = checkIn.createdAt;
+                if (lastCheckInTime.toDateString() == currentTime.toDateString()) {
+                    var lastHours = lastCheckInTime.getHours();
+                    if (lastHours + 2 >= hours) {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -40,7 +42,7 @@ AV.Cloud.define("checkIn", function(request, response) {
                 response.error("不用狂刷存在感的");
             } else {
                 var location = new AV.GeoPoint({latitude: parseFloat(request.params.lat), longitude: parseFloat(request.params.lng)});
-                if (0.5 > location.kilometersTo(new AV.GeoPoint({latitude: 31.204736, longitude: 121.441307}))) {
+                if (0.5 > location.kilometersTo(new AV.GeoPoint({latitude: 31.204754, longitude: 121.441255}))) {
                     var CheckIn = AV.Object.extend("CheckIn");
                     var checkIn = new CheckIn();
                     checkIn.save({
