@@ -30,7 +30,7 @@ AV.Cloud.define("checkIn", function(request, response) {
             if (null != checkIn) {
                 var lastCheckInTime = checkIn.createdAt;
                 if (lastCheckInTime.toDateString() == currentTime.toDateString()) {
-                    var lastHours = lastCheckInTime.getHours();
+                    var lastHours = lastCheckInTime.getUTCHours();
                     if (lastHours + 2 >= hours) {
                         return true;
                     }
